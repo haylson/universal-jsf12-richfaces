@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk" 
+	xml:lang="pt" lang="pt-br">
+	
+<f:view>
+
+
+<head>
+	<title><h:outputText value=": #{msg['application.name']} - #{msg['application.version']} " /> <ui:insert name="title" /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+	<link href="/universal/styles/padrao.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="/universal/js/jquery.maskedinput-1.2.2.js"></script>
+	<script type="text/javascript" src="/universal/js/dataHora.js"></script>
+	<script type="text/javascript" src="/universal/js/bvUtil.js"></script>
+	
+</head>
+
+<body onload="relogio('relogio')">
+
+<rich:panel  bodyClass="no-padding">
+	
+	<f:facet name="header">
+		<h:form id="formPadrao">
+			<h:panelGrid columns="7" columnClasses="left,right,left,left,left,right" width="100%">
+				<h:outputText>
+					#{msg['application.name']}:&#160;<ui:insert name="title" />
+				</h:outputText>
+				<h:graphicImage value="/images/clock3.png" width="25" title="#{msg['page.padrao.label.dataHora']}" styleClass="pic"/>
+				<div id="relogio" />	
+				<h:panelGroup>
+					<h:outputLabel value="#{msg['page.padrao.label.usuario']}:" />
+					<h:outputLabel value="#{loginBean.usuario.login}" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:selectOneMenu value="#{skinBean.skin}" onchange="this.form.submit()" >
+						<f:selectItems value="#{skinBean.skinsList}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:commandLink action="#{utilBean.alterarLinguagemPortugues}" >
+						<h:graphicImage value="/images/flagbrasil2.png" width="20" title="#{msg['page.padrao.label.alterarPortugues']}" styleClass="pic"/>
+					</h:commandLink>
+					<h:commandLink action="#{utilBean.alterarLinguagemIngles}" >
+						<h:graphicImage value="/images/flageua2.png" width="20" title="#{msg['page.padrao.label.alterarIngles']}" styleClass="pic"/>
+					</h:commandLink>
+				</h:panelGroup>
+				<h:panelGrid columns="3" columnClasses="left,left,right" >
+					<h:commandLink action="index" >
+						<h:graphicImage value="/images/home.png" width="20" title="#{msg['menu.paginaInicial']}"/>
+					</h:commandLink>
+					<h:commandLink action="formAlteraSenha" >
+						<h:graphicImage value="/images/senha2.png" width="20" title="#{msg['page.padrao.label.mudarSenha']}"/>
+					</h:commandLink>
+					<h:commandLink action="#{loginBean.logout}">  
+						<h:graphicImage value="/images/logout.png" width="20" title="#{msg['page.logout.title']}"/>
+					</h:commandLink>
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:panelGrid columns="6" columnClasses="left,left,left,left,left,left,left" width="100%">
+				<rich:toolBar >
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/archive.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.cadastros']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['page.padrao.label.estado']}" />
+						<rich:menuItem status="loading" action="#{cidadeBean.listar}" value="#{msg['page.padrao.label.cidade']}" />
+						<rich:menuSeparator id="separator1" />
+						<rich:menuItem status="loading" action="#{clienteBean.listar}" value="#{msg['page.padrao.label.cliente']}" />
+						<rich:menuItem status="loading" action="#{promotorBean.listar}" value="#{msg['page.padrao.label.promotor']}" />
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/calc2.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.financeiro']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.financeiro.teste']}" />
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/money.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.vendas']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.vendas.teste']}" />
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/stock.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.estoque']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.estoque.teste']}" />
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/reports.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.relatorios']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.relatorios.teste']}"/>
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/security.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.seguranca']}"/>
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.seguranca.usuario']}"  icon="/images/useradd.png" />
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.seguranca.grupoUsuario']}"  icon="/images/users.png" />
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.seguranca.permissoes']}"  icon="/images/user2.png" />
+					</rich:dropDownMenu>
+					<rich:dropDownMenu>
+						<f:facet name="label"> 
+                    		<h:panelGroup>
+                        		<h:graphicImage value="/images/config4.png" width="20" styleClass="pic" />
+                        		<h:outputText value="#{msg['menu.configuracoes']}" />
+                    		</h:panelGroup>
+                		</f:facet>
+						<rich:menuItem status="loading" action="#{estadoBean.listar}" value="#{msg['menu.configuracoes.gerais']}" icon="/images/config2.png" />
+					</rich:dropDownMenu>
+
+					<a4j:status id="loading" >
+						<f:facet name="start">
+							<h:graphicImage value="/images/connect_active.gif"  height="20" width="20" title="carregando..." />
+						</f:facet>
+					</a4j:status>
+				</rich:toolBar>
+			</h:panelGrid>
+		</h:form>
+	</f:facet>
+
+	<div style="padding: 0.6em;"><ui:insert name="body" /></div>
+</rich:panel>
+</body>
+</f:view>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:bv="/bv-tags" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.listUsuario.title']}</ui:define>
+			<ui:define name="body">
+
+				<c:if test="#{!(usuarioBean.ADMIN || usuarioBean.SUPER)}">
+					<script>location.href = '#{usuarioBean.PAG_SEM_PERMISSAO}'</script>
+				</c:if>
+
+				<a4j:region>
+					<h:panelGrid id="panelMsgSucesso">
+						<h:message for="panelMsgSucesso" styleClass="sucess" />
+					</h:panelGrid>
+
+					<h:form id="formUsuario">
+						<h:message for="formUsuario" errorStyle="color: red;" />
+
+						<h:panelGrid columns="4" columnClasses="rigth,left,left,left">
+
+							<h:outputLabel for="inputBusca" value="#{msg['commons.buscar']}" />
+							<h:selectOneMenu value="#{usuarioBean.campo}">
+								<f:selectItem itemLabel="Nome" itemValue="nome" />
+								<f:selectItem itemLabel="Login" itemValue="login" />
+								<f:selectItem itemLabel="Cpf/Cnpj" itemValue="cnpjCpf" />
+							</h:selectOneMenu>
+							<h:inputText id="inputBusca" value="#{usuarioBean.valor}" maxlength="50" size="20" />
+							<a4j:commandButton status="loading" value="#{msg['commons.buscar']}" action="#{usuarioBean.findSValue}"
+								reRender="usuarioTable" type="submit" />
+						</h:panelGrid>
+
+						<br />
+						<a4j:region>
+							<rich:dataTable value="#{usuarioBean.dataModel}" id="usuarioTable" 
+								binding="#{usuarioBean.table}" var="usuario"
+								onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+								onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="1"
+								cellspacing="0" cellpadding="2" rows="10" styleClass="rich-table">
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['page.listUsuario.label.login']}" />
+									</f:facet>
+									<h:commandLink disabled="#{!(usuarioBean.ADMIN || usuarioBean.SUPER)}" action="#{usuarioBean.prepareEdit}">
+										<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}" />
+										<h:outputText value="#{usuario.login}" />
+									</h:commandLink>
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['page.listUsuario.label.email']}" />
+									</f:facet>
+									<h:outputText value="#{usuario.email}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['page.listUsuario.label.ativo']}" />
+									</f:facet>
+									<h:selectBooleanCheckbox value="#{usuario.ativo}" disabled="true" />
+								</rich:column>
+
+								<f:facet name="footer">
+									<rich:datascroller status="loading" for="usuarioTable" 
+									page="#{usuarioBean.numPagina}" scrollerListener="#{usuarioBean.prepareNextPage}" />
+								</f:facet>
+							</rich:dataTable>
+						</a4j:region>
+						<hr />
+						<h:commandButton action="index" value="#{msg['commons.voltar']}" />
+						<h:commandButton rendered="#{perfilBean.SUPER || perfilBean.ADMIN}" action="#{usuarioBean.prepareInsert}" value="#{msg['commons.novo']}" />
+					</h:form>
+				</a4j:region>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

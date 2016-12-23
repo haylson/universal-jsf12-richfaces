@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.listPromotor.title']}</ui:define>
+			<ui:define name="body">
+<!-- Exemplo de código com as configurações do css estariam na propra pagina -->			
+<!--			<style> -->
+<!--			.error {-->
+<!--					color: red;-->
+<!--					background-image:url("/images/delete.gif"); -->
+<!--					font-size: 12px;-->
+<!--			}-->
+<!--			</style>-->
+			
+				<h:form id="formPromotor">
+				<fieldset style="width: 50%;">
+					<legend>
+						<h:outputText value="#{msg['page.listPromotor.title']}" style="font-size: 13px; font-weight: bold;" />
+					</legend>
+					
+					<h:message for="formPromotor" errorClass="error" styleClass="padrao"/>
+					
+				<a4j:region>
+					<rich:dataTable id="listaPromotores" value="#{promotorBean.listaPromotores}" var="promotor"
+						onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+						onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="0"
+						cellspacing="1" cellpadding="2" rows="10" styleClass="rich-table">
+	
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.Promotor.label.id']}" />
+							</f:facet>
+							<h:outputText value="#{promotor.id}" />
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.Promotor.label.nome']}" />
+							</f:facet>
+							<h:outputText value="#{promotor.pessoa.nome}" />
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.label.foneResidencial']}" />
+							</f:facet>
+							<h:outputText value="#{promotor.pessoa.foneResidencial}" >
+								<f:converter converterId="converter.FoneConverter"/>								
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.label.foneCelular1']}" />
+							</f:facet>
+							<h:outputText value="#{promotor.pessoa.foneCelular1}" >
+								<f:converter converterId="converter.FoneConverter"/>								
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.label.foneCelular2']}" />
+							</f:facet>
+							<h:outputText value="#{promotor.pessoa.foneCelular2}" >
+								<f:converter converterId="converter.FoneConverter"/>								
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.editar']}" />
+								</f:facet>
+								<h:commandLink action="#{promotorBean.preparaAtualizar}">
+									<h:graphicImage value="/images/edit4.png" width="30" title="#{msg['commons.editar']}"/>
+									<f:setPropertyActionListener target="#{promotorBean.promotor}" value="#{promotor}" />
+								</h:commandLink>
+						</rich:column>
+						
+						<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.excluir']}" />
+								</f:facet>
+								<h:commandLink action="#{promotorBean.apagar}"
+								 	onclick="javascript:if (!confirm('Deseja excluir este registro?')) return false;">
+									<h:graphicImage value="/images/delete.png" title="#{msg['commons.excluir']}" styleClass="lixeiracss"/>
+									<f:setPropertyActionListener target="#{promotorBean.promotor}" value="#{promotor}" />
+								</h:commandLink>
+						</rich:column>
+						
+						<f:facet name="footer">
+								<rich:datascroller status="loading" for="listaPromotores" maxPages="10" />
+						</f:facet>
+							
+					</rich:dataTable>
+					
+				</a4j:region>
+					
+					<hr />
+
+					<h:commandButton action="index" value="#{msg['commons.voltar']}" />
+					<h:commandButton action="#{promotorBean.preparaInserir}" value="#{msg['commons.novo']}"/>
+				</fieldset>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

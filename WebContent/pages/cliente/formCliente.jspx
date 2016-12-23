@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:stella="http://stella.caelum.com.br/faces">
+    
+    	<style type="text/css">
+            .rich-messages-marker img {padding-right:7px;}
+            .rich-message-label {color:red;}
+            .top {vertical-align:top;}
+     	</style>
+    
+<f:view>
+<ui:composition template="/pages/templates/padrao.jspx">
+	<ui:define name="title">#{msg['page.formCliente.title']}</ui:define>
+	<ui:define name="body">
+
+		<h:form >
+		<h:messages errorStyle="color: red;" >
+			<f:facet name="header">
+            	<h:outputText value="Entered Data Status:"></h:outputText>
+            </f:facet>
+            <f:facet name="passedMarker">
+            	<h:graphicImage  value="/images/ajax/passed.gif" /> 
+            </f:facet>
+            <f:facet name="error">
+                <h:graphicImage value="/images/error.gif" />   
+            </f:facet>
+		</h:messages>
+		
+		<fieldset style="width: 50%;">
+			<legend>
+				<h:outputText value="#{msg['page.formCliente.title']}" style="font-size: 13px; font-weight: bold;" />
+			</legend>
+			<h:panelGrid id="dadosPessoa" columns="3" columnClasses="right,left,left">
+				
+				<h:outputLabel for="nomePessoaInput" value="#{msg['page.listPessoa.label.nome']}*:" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				<h:inputText id="nomePessoaInput" value="#{clienteBean.cliente.pessoa.nome}" required="true" maxlength="60" size="30" rendered="#{clienteBean.tipoPessoaFisica}">
+					<f:validateLength minimum="3" />
+				</h:inputText>
+				<h:message for="nomePessoaInput" errorClass="error" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				
+				<h:outputLabel for="nomeFantasiaInput" value="#{msg['page.listPessoa.label.nomeFantasia']}*:" rendered="#{!clienteBean.tipoPessoaFisica}"/>
+				<h:inputText id="nomeFantasiaInput" value="#{clienteBean.cliente.pessoa.nome}" required="true" maxlength="60" size="30" rendered="#{!clienteBean.tipoPessoaFisica}">
+					<f:validateLength minimum="3"  />
+				</h:inputText>
+				<h:message for="nomeFantasiaInput" errorClass="error" rendered="#{!clienteBean.tipoPessoaFisica}"/>
+							
+				<h:outputLabel value="#{msg['page.listPessoa.label.tipoPessoa']}*:" />
+				<h:selectOneMenu id="listTipoPessoa" value="#{clienteBean.cliente.pessoa.tipoPessoa}" required="true" styleClass="ComboBox" >
+					<t:selectItems value="#{clienteBean.listaTipoPessoa}" var="tipoPessoa" itemLabel="#{tipoPessoa}" itemValue="#{tipoPessoa}" />
+					<a4j:support id="idTipoPessoa" status="loading" event="onchange" ajaxSingle="true" reRender="dadosPessoa" action="#{clienteBean.trocarTipoPessoa}" />
+				</h:selectOneMenu>
+				<h:message for="listTipoPessoa" errorClass="error" />
+				
+				<h:outputLabel for="cpfInput" value="#{msg['page.listPessoa.label.cpf']}*:" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				<h:inputText id="cpfInput" value="#{clienteBean.cliente.pessoa.cpfCnpj}" required="true" maxlength="14" size="14" rendered="#{clienteBean.tipoPessoaFisica}">
+					<stella:validateCPF />
+					<rich:jQuery selector="#cpfInput" query="mask('999.999.999-99')" timing="onload" />
+					<f:converter converterId="converter.CpfConverter"/>
+				</h:inputText>
+				<h:message for="cpfInput" errorClass="error" rendered="#{clienteBean.tipoPessoaFisica}" />
+				
+				<h:outputLabel for="cnpjInput" value="#{msg['page.listPessoa.label.cnpj']}*:" rendered="#{!clienteBean.tipoPessoaFisica}"/>
+				<h:inputText id="cnpjInput" value="#{clienteBean.cliente.pessoa.cpfCnpj}" required="true" maxlength="18" size="18" rendered="#{!clienteBean.tipoPessoaFisica}">
+					<stella:validateCNPJ />
+					<rich:jQuery selector="#cnpjInput" query="mask('99.999.999/9999-99')" timing="onload" />
+					<f:converter converterId="converter.CnpjConverter"/>
+				</h:inputText>
+				<h:message for="cnpjInput" errorClass="error" rendered="#{!clienteBean.tipoPessoaFisica}" />
+				
+				
+				<h:outputLabel for="rgInput" value="#{msg['page.listPessoa.label.rg']}:" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				<h:inputText id="rgInput" value="#{clienteBean.cliente.pessoa.rg}" maxlength="15" size="14" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				<h:message for="rgInput" errorClass="error" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				
+				<h:outputLabel for="dataNascimentoInput" value="#{msg['page.listPessoa.label.dataNascimento']}:" rendered="#{clienteBean.tipoPessoaFisica}"/>
+					<rich:calendar datePattern="dd/MM/yyyy" value="#{clienteBean.cliente.pessoa.dataNascimento}" id="dtNascimento" enableManualInput="true" rendered="#{clienteBean.tipoPessoaFisica}">  
+             			<f:convertDateTime type="date" dateStyle="short" locale="pt,BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy" />  
+         		 	</rich:calendar> 
+				<h:message for="dataNascimentoInput" errorClass="error" rendered="#{clienteBean.tipoPessoaFisica}"/>
+				
+				<h:outputLabel for="dataCadastroInput" value="#{msg['page.formPessoa.label.dataDeCadastro']}:" />
+					<rich:calendar datePattern="dd/MM/yyyy" value="#{clienteBean.cliente.pessoa.dataDeCadastro}" id="dtCadastro" enableManualInput="true">  
+             			<f:convertDateTime type="date" dateStyle="short" locale="pt,BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy" />  
+         			</rich:calendar> 
+				<h:message for="dataCadastroInput" errorClass="error" />
+				
+				<h:outputLabel value="#{msg['page.formCliente.label.promotor']}*:" />
+					<h:selectOneMenu id="listPromotor" value="#{clienteBean.cliente.promotor.id}" required="true" >
+						<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+						<t:selectItems var="promotor" itemLabel="#{promotor.pessoa.nome}" itemValue="#{promotor.id}" value="#{clienteBean.listaPromotores}" />
+					</h:selectOneMenu>
+				<h:message for="listPromotor" errorClass="error" />
+				
+				<h:outputLabel for="ativoInput" value="#{msg['page.formCliente.label.ativo']}*:" />
+				<h:selectBooleanCheckbox id="ativoInput" value="#{clienteBean.cliente.ativo}"/>
+				<h:message for="ativoInput" errorClass="error" />
+				
+			</h:panelGrid>
+				
+				<fieldset style="width: 60%;">
+						<legend>
+							<h:outputText value="#{msg['page.formPessoa.label.endereco']}" style="font-weight: bold;" />
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelEndereco">
+							
+							<h:outputLabel for="logradouroInput" value="#{msg['page.label.logradouro']}*:" />
+							<h:inputText id="logradouroInput" value="#{clienteBean.cliente.pessoa.endereco.logradouro}" required="true" maxlength="100" size="40" />
+							<h:message for="logradouroInput" errorClass="error" />
+							
+							<h:outputLabel for="complementoInput" value="#{msg['page.label.complemento']}:" />
+							<h:inputText id="complementoInput" value="#{clienteBean.cliente.pessoa.endereco.complemento}" maxlength="100" size="40" />
+							<h:message for="complementoInput" errorClass="error" />
+							
+							<h:outputLabel for="bairroInput" value="#{msg['page.label.bairro']}*:" />
+							<h:inputText id="bairroInput" value="#{clienteBean.cliente.pessoa.endereco.bairro}" required="true" maxlength="60" size="30" />
+							<h:message for="bairroInput" errorClass="error" />
+							
+							<h:outputLabel for="pontoReferenciaInput" value="#{msg['page.label.pontoDeReferencia']}:" />
+							<h:inputText id="pontoReferenciaInput" value="#{clienteBean.cliente.pessoa.endereco.pontoDeReferencia}" maxlength="100" size="40" />
+							<h:message for="pontoReferenciaInput" errorClass="error" />
+							
+							<h:outputLabel for="cepInput" value="#{msg['page.label.cep']}:" />
+							<h:inputText id="cepInput" value="#{clienteBean.cliente.pessoa.endereco.cep}" maxlength="8" size="8" >
+								<rich:jQuery selector="#cepInput" query="mask('99.999-999')" timing="onload" />
+								<f:converter converterId="converter.CepConverter"/>
+							</h:inputText>
+							<h:message for="cepInput" errorClass="error" />
+							
+							<h:outputLabel value="#{msg['page.formCidade.label.estado']}*:" />
+								<h:selectOneMenu id="listEstado" value="#{clienteBean.cliente.pessoa.endereco.estado.id}" required="true" >
+									<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+									<t:selectItems var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" value="#{clienteBean.listaEstados}" />
+									<a4j:support id="idCarregaCidades" status="loading" event="onchange" ajaxSingle="true" reRender="listCidade" action="#{clienteBean.carregaCidades}" />
+								</h:selectOneMenu>
+							<h:message for="listEstado" errorClass="error" />
+							
+							<h:outputLabel value="#{msg['page.formCidade.label.cidade']}*:" />
+								<h:selectOneMenu id="listCidade" value="#{clienteBean.cliente.pessoa.endereco.cidade.id}" required="true" >
+									<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+									<t:selectItems value="#{clienteBean.listaCidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" />
+								</h:selectOneMenu>
+							<h:message for="listCidade" errorClass="error" />
+							
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+				
+				<fieldset style="width: 55%;">
+						<legend>
+							<h:outputText value="#{msg['page.formCliente.label.contatos']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelContatos">
+							
+							<h:outputLabel for="foneResidencialInput" value="#{msg['page.listPessoa.label.foneResidencial']}:" />
+							<h:inputText id="foneResidencialInput" value="#{clienteBean.cliente.pessoa.foneResidencial}" maxlength="10" size="10" >
+								<rich:jQuery selector="#foneResidencialInput" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneResidencialInput" errorClass="error" />
+							
+							<h:outputLabel for="foneComercialInput" value="#{msg['page.listPessoa.label.foneComercial']}:" />
+							<h:inputText id="foneComercialInput" value="#{clienteBean.cliente.pessoa.foneComercial}" maxlength="10" size="10" >
+								<rich:jQuery selector="#foneComercialInput" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneComercialInput" errorClass="error" />
+							
+							<h:outputLabel for="foneCelular1Input" value="#{msg['page.listPessoa.label.foneCelular1']}:" />
+							<h:inputText id="foneCelular1Input" value="#{clienteBean.cliente.pessoa.foneCelular1}" maxlength="10" size="10" >
+								<rich:jQuery selector="#foneCelular1Input" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneCelular1Input" errorClass="error" />
+							
+							<h:outputLabel for="foneCelular2Input" value="#{msg['page.listPessoa.label.foneCelular2']}:" />
+							<h:inputText id="foneCelular2Input" value="#{clienteBean.cliente.pessoa.foneCelular2}" maxlength="10" size="10" >
+								<rich:jQuery selector="#foneCelular2Input" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneCelular2Input" errorClass="error" />
+							
+							<h:outputLabel for="emailInput" value="#{msg['page.listPessoa.label.email']}:" />
+							<h:inputText id="emailInput" value="#{clienteBean.cliente.pessoa.email}" maxlength="60" size="20" />
+							<h:message for="emailInput" errorClass="error" />
+				
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+				
+				<fieldset style="width: 55%;">
+						<legend>
+							<h:outputText value="#{msg['page.formCliente.label.filiacao']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelFiliacao">
+							
+							<h:outputLabel for="nomePaiInput" value="#{msg['page.formCliente.label.nomePai']}:" />
+							<h:inputText id="nomePaiInput" value="#{clienteBean.cliente.nomePai}" maxlength="60" size="30" />
+							<h:message for="nomePaiInput" errorClass="error" />
+				
+							<h:outputLabel for="nomeMaeInput" value="#{msg['page.formCliente.label.nomeMae']}:" />
+							<h:inputText id="nomeMaeInput" value="#{clienteBean.cliente.nomeMae}" maxlength="60" size="30" />
+							<h:message for="nomeMaeInput" errorClass="error" />
+				
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+			
+				<fieldset style="width: 55%;">
+						<legend>
+							<h:outputText value="#{msg['page.formCliente.label.referencia']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelReferencia">
+							
+							<h:outputLabel for="nomePessoaReferenciaInput" value="#{msg['page.formCliente.label.nomePessoaReferencia']}*:" />
+							<h:inputText id="nomePessoaReferenciaInput" value="#{clienteBean.cliente.nomePessoaReferencia}" required="true" maxlength="60" size="30" />
+							<h:message for="nomePessoaReferenciaInput" errorClass="error" />
+				
+							<h:outputLabel for="familiariedadePessoaReferenciaInput" value="#{msg['page.formCliente.label.familiariedadePessoaReferencia']}*:" />
+							<h:inputText id="familiariedadePessoaReferenciaInput" value="#{clienteBean.cliente.familiariedadePessoaReferencia}" required="true" maxlength="30" size="10" />
+							<h:message for="familiariedadePessoaReferenciaInput" errorClass="error" />
+				
+							<h:outputLabel for="fonePessoaReferenciaInput" value="#{msg['page.formCliente.label.fonePessoaReferencia']}*:" />
+							<h:inputText id="fonePessoaReferenciaInput" value="#{clienteBean.cliente.fonePessoaReferencia}" required="true" maxlength="10" size="10" >
+								<rich:jQuery selector="#fonePessoaReferenciaInput" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="fonePessoaReferenciaInput" errorClass="error" />
+							
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+				
+				<fieldset style="width: 55%;" >
+						<legend>
+							<h:outputText value="#{msg['page.listPessoa.label.Observacao']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left,left">
+										<h:inputTextarea  id="observacaoInput" value="#{clienteBean.cliente.pessoa.observacao}" rows="5" cols="45" />
+										<h:message for="observacaoInput" errorClass="error" />
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+							
+			<br/>
+
+			<hr/>
+			<h:commandButton action="listCliente" value="#{msg['commons.voltar']}" immediate="true" />
+			<h:commandButton action="#{clienteBean.salvar}" value="#{msg['commons.salvar']}" />
+		
+		</fieldset>	
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+</f:view>
+</jsp:root>

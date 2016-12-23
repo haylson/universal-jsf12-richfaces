@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+        
+
+    <bean id="envioEmailAgendamentoJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="br.com.projeto.service.job.EnvioEmailAgendamentoJob"/>
+    </bean> 
+    
+      <bean id="envioEmailSolicitacaoVerbaJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="br.com.projeto.service.job.EnvioEmailSolicitacaoVerbaJob"/>
+    </bean> 
+
+     <bean id="envioEmailProAtivoJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="br.com.projeto.service.job.EnvioEmailProAtivoJob"/>
+    </bean>    
+    
+    <bean id="envioEmailRastreamentoJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="br.com.projeto.service.job.EnvioEmailRastreamentoJob"/>
+    </bean>   
+    
+     
+    <bean id="cronTriggerEnvioSolicitacaoVerba" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="envioEmailSolicitacaoVerbaJob" />
+        <property name="cronExpression" value="0 0/8 * * * ?" />
+    </bean>
+    
+    <bean id="cronTriggerEnvioAgendamento" class="org.springframework.scheduling.quartz.CronTriggerBean">
+      	<property name="jobDetail" ref="envioEmailAgendamentoJob" />  
+        <property name="cronExpression" value="0 0/10 * * * ?" />
+    </bean>
+    
+    <bean id="cronTriggerEnvioProAtivo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+      	<property name="jobDetail" ref="envioEmailProAtivoJob" />  
+        <property name="cronExpression" value="0 0/12 * * * ?" />
+    </bean>
+    
+     <bean id="cronTriggerEnvioRastreamento" class="org.springframework.scheduling.quartz.CronTriggerBean">
+      	<property name="jobDetail" ref="envioEmailRastreamentoJob" />  
+        <property name="cronExpression" value="0 0/4 * * * ?" />
+    </bean>
+        
+   
+    <bean id="schedulerFactoryBean"
+       class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+       <property name="triggers">
+          <list>
+	          <ref bean="cronTriggerEnvioAgendamento" />
+	          <ref bean="cronTriggerEnvioSolicitacaoVerba" />
+	          <ref bean="cronTriggerEnvioProAtivo" />
+	          <ref bean="cronTriggerEnvioRastreamento" />
+          </list>
+       </property>
+        
+        <property name="applicationContextSchedulerContextKey">
+            <value>applicationContext</value>
+    	</property>
+    </bean>
+    
+    <!-- Como utilizar o agendador
+      Opredaores:
+      * = Qualquer valor; n/n = Divisível por n; n-n = Faixa de valores;
+      Parâmetros:
+      #=================== segundos (0 - 59)
+      |  #================ minutos (0 - 59)
+      |  |  #============= horas (0 - 23)
+      |  |  |  #========== dia do mes (1 - 31)
+      |  |  |  |  #======= mes (1 - 12)
+      |  |  |  |  |  #==== dia da semana (0 - 6) (Domingo = 0 ou 7)
+      |  |  |  |  |  |
+      *  *  *  *  *  *
+      Exemplo: "*/2 15-20 * * * ?" = a cada 2 seg. do minuto 15 ao 20
+      
+      
+      	 	
+CronTrigger Exemplo 1 - uma expressão para criar um gatilho que simplesmente incêndios cada 5 minutos
+
+"0 0 / 5 * * *?"
+
+CronTrigger: 5 minutos, a 10 segundos após o minuto (ou seja, 10:00:10, 10:05:10, etc.)
+
+"10 0 / 5 * * *?"
+
+CronTrigger Exemplo 3 - uma expressão para criar um gatilho 
+que incêndios às 10:30, 11:30, 12:30 e 13:30, em todas as quartas e sextas-feiras.
+
+"0 30 10/13? * Qua., sex."
+
+CronTrigger Exemplo 4 - uma expressão para criar um gatilho 
+que incêndios cada meia hora entre o horário de 8 e 10 no 5 º e 20 de cada mês. 
+Observe que o gatilho não vai disparar às 10h00, apenas às 8:00, 8:30, 9:00 e 9:30
+
+"0 0 / 30 8/9 5,20 *?"
+
+Note que a programação de alguns 
+requisitos são demasiado complexos para expressar com um único gatilho - 
+tais como "a cada 5 minutos entre as 9:00 e 10:00, e todos os 20 minutos entre as 1:00 e 10:00". A
+solução, neste cenário é o de simplesmente criar dois triggers, e registo de ambos para executar o mesmo trabalho.
+      -->
+
+</beans>

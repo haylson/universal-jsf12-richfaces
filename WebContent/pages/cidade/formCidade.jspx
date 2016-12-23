@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<f:view>
+<ui:composition template="/pages/templates/padrao.jspx">
+	<ui:define name="title">#{msg['page.formCidade.title']}</ui:define>
+	<ui:define name="body">
+		
+		<h:form id="formCidade">
+		<fieldset style="width: 25%;">
+			<legend>
+				<h:outputText value="#{msg['page.formCidade.title']}" style="font-size: 13px; font-weight: bold;" />
+			</legend>
+			<h:message for="formCidade" errorClass="error" />
+			<h:panelGrid columns="3" columnClasses="right,left,left">
+				
+				<h:outputLabel for="nomeInput" value="#{msg['page.formCidade.label.nome']}*:" />
+				<h:inputText id="nomeInput" value="#{cidadeBean.cidade.nome}" required="true" maxlength="20" size="20" />
+				<h:message for="nomeInput" errorClass="error" />
+				
+				<h:outputLabel value="#{msg['page.formCidade.label.estado']}*:" />
+					<h:selectOneMenu id="listEstado" value="#{cidadeBean.cidade.estado.id}" required="true" >
+						<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+						<t:selectItems var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" value="#{cidadeBean.listaEstados}" />
+					</h:selectOneMenu>
+				<h:message for="listEstado" errorClass="error" />
+				
+			</h:panelGrid>
+
+			<hr/>
+
+			<h:commandButton action="listCidade" value="#{msg['commons.voltar']}" immediate="true" />
+			<h:commandButton action="#{cidadeBean.salvar}" value="#{msg['commons.salvar']}" />
+		
+		</fieldset>	
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</f:view>
+</jsp:root>

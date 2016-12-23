@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:stella="http://stella.caelum.com.br/faces">
+    
+    
+<f:view>
+<ui:composition template="/pages/templates/padrao.jspx">
+	<ui:define name="title">#{msg['page.formPromotor.title']}</ui:define>
+	<ui:define name="body">
+	
+		<h:form >
+		<fieldset style="width: 50%;">
+					<legend>
+						<h:outputText value="#{msg['page.formPromotor.title']}" style="font-size: 13px; font-weight: bold;" />
+					</legend>
+			<h:panelGrid columns="3" columnClasses="right,left,left">
+				
+				<h:outputLabel for="nomePessoaInput" value="#{msg['page.listPessoa.label.nome']}*:" />
+				<h:inputText id="nomePessoaInput" value="#{promotorBean.promotor.pessoa.nome}" required="true" maxlength="60" size="30" />
+				<h:message for="nomePessoaInput" errorClass="error" />			
+
+				<h:outputLabel for="cpf" value="#{msg['page.listPessoa.label.cpfCnpj']}*:" />
+				<h:inputText id="cpf" value="#{promotorBean.promotor.pessoa.cpfCnpj}" required="true" maxlength="14" size="14">
+					<stella:validateCPF />
+					<rich:jQuery selector="#cpf" query="mask('999.999.999-99')" timing="onload" />
+					<f:converter converterId="converter.CpfConverter"/>
+				</h:inputText>
+				<h:message for="cpf" errorClass="error" />
+				
+				<h:outputLabel for="rgInput" value="#{msg['page.listPessoa.label.rg']}:" />
+				<h:inputText id="rgInput" value="#{promotorBean.promotor.pessoa.rg}" maxlength="15" size="14" autocomplete="off" />
+				<h:message for="rgInput" errorClass="error" />
+				
+				<h:outputLabel for="dataNascimentoInput" value="#{msg['page.listPessoa.label.dataNascimento']}:" />
+					<rich:calendar datePattern="dd/MM/yyyy" value="#{promotorBean.promotor.pessoa.dataNascimento}" id="dtNascimento" enableManualInput="true" >  
+             			<f:convertDateTime type="date" dateStyle="short" locale="pt,BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy"/>  
+         		 	</rich:calendar>
+				<h:message for="dataNascimentoInput" errorClass="error" />
+				
+				<h:outputLabel for="ativoInput" value="#{msg['page.formCliente.label.ativo']}*:" />
+				<h:selectBooleanCheckbox id="ativoInput" value="#{promotorBean.promotor.ativo}"/>
+				<h:message for="ativoInput" errorClass="error" />
+				
+			</h:panelGrid>
+				
+				<fieldset style="width: 55%;">
+						<legend>
+							<h:outputText value="#{msg['page.formPessoa.label.endereco']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelEndereco">
+							
+							<h:outputLabel for="logradouroInput" value="#{msg['page.label.logradouro']}*:" />
+							<h:inputText id="logradouroInput" value="#{promotorBean.promotor.pessoa.endereco.logradouro}" required="true" maxlength="100" size="40" />
+							<h:message for="logradouroInput" errorClass="error" />
+							
+							<h:outputLabel for="complementoInput" value="#{msg['page.label.complemento']}:" />
+							<h:inputText id="complementoInput" value="#{promotorBean.promotor.pessoa.endereco.complemento}" maxlength="100" size="40" />
+							<h:message for="complementoInput" errorClass="error" />
+							
+							<h:outputLabel for="bairroInput" value="#{msg['page.label.bairro']}*:" />
+							<h:inputText id="bairroInput" value="#{promotorBean.promotor.pessoa.endereco.bairro}" required="true" maxlength="60" size="30" />
+							<h:message for="bairroInput" errorClass="error" />
+							
+							<h:outputLabel for="pontoReferenciaInput" value="#{msg['page.label.pontoDeReferencia']}:" />
+							<h:inputText id="pontoReferenciaInput" value="#{promotorBean.promotor.pessoa.endereco.pontoDeReferencia}" maxlength="100" size="40" />
+							<h:message for="pontoReferenciaInput" errorClass="error" />
+							
+							<h:outputLabel for="cepInput" value="#{msg['page.label.cep']}:" />
+							<h:inputText id="cepInput" value="#{promotorBean.promotor.pessoa.endereco.cep}" maxlength="10" size="10" >
+								<rich:jQuery selector="#cepInput" query="mask('99.999-999')" timing="onload" />
+								<f:converter converterId="converter.CepConverter"/>
+							</h:inputText>
+							<h:message for="cepInput" errorClass="error" />
+							
+							<h:outputLabel value="#{msg['page.formCidade.label.estado']}*:" />
+								<h:selectOneMenu id="listEstado" value="#{promotorBean.promotor.pessoa.endereco.estado.id}" required="true" >
+									<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+									<t:selectItems var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" value="#{promotorBean.listaEstados}" />
+									<a4j:support id="a1" status="loading" event="onchange" ajaxSingle="true" reRender="listCidade" action="#{promotorBean.carregaCidades}" />
+								</h:selectOneMenu>
+							<h:message for="listEstado" errorClass="error" />
+							
+							<h:outputLabel value="#{msg['page.formCidade.label.cidade']}*:" />
+								<h:selectOneMenu id="listCidade" value="#{promotorBean.promotor.pessoa.endereco.cidade.id}" required="true" >
+									<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+									<t:selectItems value="#{promotorBean.listaCidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" />
+								</h:selectOneMenu>
+							<h:message for="listCidade" errorClass="error" />
+							
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+				
+				<fieldset style="width: 55%;">
+						<legend>
+							<h:outputText value="#{msg['page.formCliente.label.contatos']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelContatos">
+							
+							<h:outputLabel for="foneResidencialInput" value="#{msg['page.listPessoa.label.foneResidencial']}:" />
+							<h:inputText id="foneResidencialInput" value="#{promotorBean.promotor.pessoa.foneResidencial}" maxlength="10" size="10" autocomplete="off">
+								<rich:jQuery selector="#foneResidencialInput" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneResidencialInput" errorClass="error" />
+							
+							<h:outputLabel for="foneCelular1Input" value="#{msg['page.listPessoa.label.foneCelular1']}:" />
+							<h:inputText id="foneCelular1Input" value="#{promotorBean.promotor.pessoa.foneCelular1}" maxlength="10" size="10" autocomplete="off">
+								<rich:jQuery selector="#foneCelular1Input" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneCelular1Input" errorClass="error" />
+							
+							<h:outputLabel for="foneCelular2Input" value="#{msg['page.listPessoa.label.foneCelular2']}:" />
+							<h:inputText id="foneCelular2Input" value="#{promotorBean.promotor.pessoa.foneCelular2}" maxlength="10" size="10" autocomplete="off">
+								<rich:jQuery selector="#foneCelular2Input" query="mask('(99)9999-9999')" timing="onload" />
+								<f:converter converterId="converter.FoneConverter"/>
+							</h:inputText>
+							<h:message for="foneCelular2Input" errorClass="error" />
+							
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+				
+				<fieldset style="width: 55%;" >
+						<legend>
+							<h:outputText value="#{msg['page.listPessoa.label.Observacao']}" style="font-weight: bold;"/>
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left,left">
+										<h:inputTextarea  id="observacaoInput" value="#{promotorBean.promotor.pessoa.observacao}" rows="5" cols="45" />
+										<h:message for="observacaoInput" errorClass="error" />
+							</h:panelGrid >
+						</a4j:region>
+				</fieldset>
+							
+			<br/>
+
+			<hr/>
+			<h:commandButton action="listPromotor" value="#{msg['commons.voltar']}" immediate="true" />
+			<h:commandButton action="#{promotorBean.salvar}" value="#{msg['commons.salvar']}" />
+		
+		</fieldset>	
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+</f:view>
+</jsp:root>

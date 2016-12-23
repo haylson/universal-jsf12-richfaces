@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.listCliente.title']}</ui:define>
+			<ui:define name="body">
+			
+				<h:form id="formCliente">
+				<fieldset style="width: 98%;">
+					<legend>
+						<h:outputText value="#{msg['page.listCliente.title']}" style="font-size: 13px; font-weight: bold;"/>
+					</legend>
+				
+				<a4j:region>
+					<h:panelGrid columns="5" columnClasses="rigth,left,left,left">
+
+						<h:outputLabel for="inputBusca" value="#{msg['commons.buscar']}:" />
+						<h:selectOneMenu value="#{clienteBean.opcaoBusca}">
+							<f:selectItem itemLabel="#{msg['page.listPessoa.label.nome']}" itemValue="nome" />
+							<f:selectItem itemLabel="#{msg['page.listPessoa.label.cpfCnpj']}" itemValue="cpfCnpj" />
+						</h:selectOneMenu>
+						<h:inputText id="inputBusca" value="#{clienteBean.valor}" maxlength="60" size="20" autocomplete="off" />
+						<h:commandLink id="buscar2"  type="submit"  action="#{clienteBean.buscar}">
+							<h:graphicImage value="/images/search2.png" width="25" title="Pesquisar"/>
+						</h:commandLink>
+					</h:panelGrid>
+
+				</a4j:region>
+
+					<br />
+
+					<h:message for="formCliente" errorClass="error" />
+				
+				<a4j:region>
+					<rich:dataTable id="listaClientes" value="#{clienteBean.listaClientes}" var="cliente"
+						onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+						onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="0"
+						cellspacing="1" cellpadding="2" rows="10" styleClass="rich-table">
+	
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listCliente.label.id']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.id}" />
+						</rich:column >
+						
+						<rich:column sortBy="#{cliente.pessoa.nome}">
+							<f:facet name="header" >
+								<h:outputText value="#{msg['page.listPessoa.label.nome']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.nome}" />	
+						</rich:column >
+						
+						
+						
+						<rich:column sortBy="#{cliente.pessoa.cpfCnpj}" >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.cpfCnpj']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.cpfCnpj}" >
+								<f:converter converterId="converter.CpfCnpjConverter"/>
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.foneResidencial']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.foneResidencial}" >
+								<f:converter converterId="converter.FoneConverter"/>							
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.formPessoa.label.foneComercial']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.foneComercial}" >
+								<f:converter converterId="converter.FoneConverter"/>							
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.formPessoa.label.foneCelular1']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.foneCelular1}" >
+								<f:converter converterId="converter.FoneConverter"/>							
+							</h:outputText>
+						</rich:column >
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.formPessoa.label.foneCelular2']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.foneCelular2}" >
+								<f:converter converterId="converter.FoneConverter"/>							
+							</h:outputText>
+						</rich:column >
+
+						<rich:column sortBy="#{cliente.promotor.pessoa.nome}">
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.formCliente.label.promotor']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.promotor.pessoa.nome}" />
+						</rich:column >
+						
+						<rich:column sortBy="#{cliente.pessoa.dataDeCadastro}">
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.dataDeCadastro']}" />
+							</f:facet>
+							<h:outputText value="#{cliente.pessoa.dataDeCadastro}" />
+						</rich:column >
+						
+						<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.editar']}" />
+								</f:facet>
+								<h:commandLink action="#{clienteBean.preparaAtualizar}">
+									<h:graphicImage value="/images/edit4.png" width="30" title="#{msg['commons.editar']}"/>
+									<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{cliente}" />
+								</h:commandLink>
+						</rich:column>
+						
+						<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.excluir']}" />
+								</f:facet>
+								<h:commandLink action="#{clienteBean.apagar}"
+								 	onclick="javascript:if (!confirm('Deseja excluir este registro?')) return false;">
+									<h:graphicImage value="/images/delete.png" title="#{msg['commons.excluir']}" styleClass="lixeiracss"/>
+									<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{cliente}" />
+								</h:commandLink>
+						</rich:column>			
+
+						<f:facet name="footer">
+								<rich:datascroller status="loading" for="listaClientes" maxPages="10" />
+						</f:facet>
+							
+					</rich:dataTable>
+					
+				</a4j:region>
+					
+					<hr />
+
+					<h:commandButton action="index" value="#{msg['commons.voltar']}" />
+					<h:commandButton action="#{clienteBean.preparaInserir}" value="#{msg['commons.novo']}"/>
+
+				</fieldset>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

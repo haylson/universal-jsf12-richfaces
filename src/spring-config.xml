@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+        
+	<import resource="dataSource.xml"/> 
+
+    <aop:aspectj-autoproxy/>
+   
+    <!-- Dao -->
+    
+    <bean id="cidadeDao" 							class="br.com.universal.dao.impl.CidadeDaoImpl" />
+    <bean id="clienteDao"    	        			class="br.com.universal.dao.impl.ClienteDaoImpl"/>
+    <bean id="estadoDao"    	        			class="br.com.universal.dao.impl.EstadoDaoImpl" />
+    <bean id="pessoaDao"	 	             	 	class="br.com.universal.dao.impl.PessoaDaoImpl" />  
+    <bean id="usuarioDao"    	        			class="br.com.universal.dao.impl.UsuarioDaoImpl"/>
+    <bean id="promotorDao"    	        			class="br.com.universal.dao.impl.PromotorDaoImpl"/>
+    
+    <!-- Service -->
+    
+    <bean id="cidadeService" class="br.com.universal.service.impl.CidadeServiceImpl">	
+    	<property name="cidadeDao" ref="cidadeDao" />
+    </bean>
+       
+    <bean id="clienteService" class="br.com.universal.service.impl.ClienteServiceImpl">	
+    	<property name="clienteDao" ref="clienteDao" />
+    </bean>
+    
+    <bean id="estadoService" class="br.com.universal.service.impl.EstadoServiceImpl" >
+		<property name="estadoDao" ref="estadoDao" />
+	</bean>
+    
+    <bean id="pessoaService" class="br.com.universal.service.impl.PessoaServiceImpl" >
+		<property name="pessoaDao" ref="pessoaDao" />
+	</bean>
+    
+    <bean id="usuarioService" class="br.com.universal.service.impl.UsuarioServiceImpl" >
+    	<property name="usuarioDao" ref="usuarioDao" />
+	</bean>
+	
+	<bean id="promotorService" class="br.com.universal.service.impl.PromotorServiceImpl">	
+    	<property name="promotorDao" ref="promotorDao" />
+    </bean>
+    
+    
+</beans>

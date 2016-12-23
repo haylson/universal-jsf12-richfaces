@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+	
+	<!-- Skin Bean -->
+	<managed-bean>
+		<managed-bean-name>skinBean</managed-bean-name>
+		<managed-bean-class> br.com.universal.bean.SkinBean </managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- Util Bean -->
+	<managed-bean>
+		<managed-bean-name>utilBean</managed-bean-name>
+		<managed-bean-class>br.com.universal.bean.UtilBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- Usuário Bean -->
+	<managed-bean>
+		<managed-bean-name>usuarioBean</managed-bean-name>
+		<managed-bean-class> br.com.universal.bean.UsuarioBean </managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<!-- Login Bean -->
+	<managed-bean>
+		<managed-bean-name>loginBean</managed-bean-name>
+		<managed-bean-class> br.com.universal.bean.LoginBean </managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<!-- Estado Bean -->
+	<managed-bean>
+		<managed-bean-name>estadoBean</managed-bean-name>
+		<managed-bean-class> br.com.universal.bean.EstadoBean </managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>estadoService</property-name>
+			<value>#{estadoService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>usuarioService</property-name>
+			<value>#{usuarioService}</value>
+		</managed-property>
+	</managed-bean>
+
+   <!-- Cidade Bean -->
+	<managed-bean>
+		<managed-bean-name>cidadeBean</managed-bean-name>
+		<managed-bean-class> br.com.universal.bean.CidadeBean </managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>cidadeService</property-name>
+			<value>#{cidadeService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>estadoService</property-name>
+			<value>#{estadoService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<!-- Cliente Bean -->
+	<managed-bean>
+		<managed-bean-name>clienteBean</managed-bean-name>
+		<managed-bean-class>br.com.universal.bean.ClienteBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>pessoaService</property-name>
+			<value>#{pessoaService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>clienteService</property-name>
+			<value>#{clienteService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>promotorService</property-name>
+			<value>#{promotorService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>estadoService</property-name>
+			<value>#{estadoService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>cidadeService</property-name>
+			<value>#{cidadeService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<!-- Pessoa Bean -->
+	<managed-bean>
+		<managed-bean-name>pessoaBean</managed-bean-name>
+		<managed-bean-class>br.com.universal.bean.PessoaBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>pessoaService</property-name>
+			<value>#{pessoaService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	<!-- Promotor Bean -->
+	<managed-bean>
+		<managed-bean-name>promotorBean</managed-bean-name>
+		<managed-bean-class>br.com.universal.bean.PromotorBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>pessoaService</property-name>
+			<value>#{pessoaService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>promotorService</property-name>
+			<value>#{promotorService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>estadoService</property-name>
+			<value>#{estadoService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>cidadeService</property-name>
+			<value>#{cidadeService}</value>
+		</managed-property>
+	</managed-bean>
+	
+	
+</faces-config>

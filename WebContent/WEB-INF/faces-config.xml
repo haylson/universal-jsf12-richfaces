@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+	
+	<!-- Configurações Gerais Spring, Mensagens, Locale  -->
+	<application>
+		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+		<el-resolver> org.springframework.web.jsf.el.SpringBeanFacesELResolver </el-resolver>
+		<resource-bundle>
+			<base-name>SystemMessages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+			<supported-locale>en</supported-locale>
+		</locale-config>
+
+	</application>
+	
+	<lifecycle>
+		<phase-listener>br.com.universal.listener.AutenticacaoListener</phase-listener>
+	</lifecycle>
+	
+	<!-- Converters -->
+
+	<converter>
+    	<converter-id>converter.CpfConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.CpfConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>converter.CnpjConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.CnpjConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>converter.CepConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.CepConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>converter.FoneConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.FoneConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>converter.DateConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.DateConverter</converter-class>
+	</converter>
+	<converter>
+    	<converter-id>converter.CpfCnpjConverter</converter-id>
+    	<converter-class>br.com.universal.bean.converters.CpfCnpjConverter</converter-class>
+	</converter>
+
+	<!-- Validators -->
+
+	<validator>
+     	<validator-id>validator.CpfValidator</validator-id>
+     	<validator-class>br.com.universal.bean.validators.CpfValidator</validator-class>
+	</validator>
+	
+	<validator>
+     	<validator-id>validator.CnpjValidator</validator-id>
+     	<validator-class>br.com.universal.bean.validators.CnpjValidator</validator-class>
+	</validator>
+	
+</faces-config>

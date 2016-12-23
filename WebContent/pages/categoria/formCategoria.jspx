@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<f:view>
+<ui:composition template="/pages/templates/padrao.jspx">
+	<ui:define name="title">
+		Cadastro de Categorias
+	</ui:define>
+	<ui:define name="body">
+
+		<h:form id="formCategoria">
+		<fieldset style="width: 25%;">
+			<legend>
+				<h:outputText value="Categoria" style="font-size: 13px; font-weight: bold;" />
+			</legend>
+			<h:message for="formCategoria" errorClass="error" />
+			<h:panelGrid columns="3" columnClasses="right,left,left">
+				
+				<h:outputLabel for="nomeInput" value="Nome*:" />
+				<h:inputText id="nomeInput" value="#{categoriaService.categoria.nome}" required="true" maxlength="20" size="20" />
+				<h:message for="nomeInput" errorClass="error" />
+				
+				<h:outputLabel for="siglaInput" value="Sigla*:" />
+				<h:inputText id="siglaInput" value="#{categoriaService.categoria.sigla}" required="true" maxlength="2" size="20" />
+				<h:message for="siglaInput" errorClass="error" />
+				
+			</h:panelGrid>
+
+			<hr/>
+
+			<h:commandButton action="listCategoria" value="#{msg['commons.voltar']}" immediate="true" />
+			<h:commandButton action="#{categoriaService.salvar}" value="#{msg['commons.salvar']}" />
+			
+		</fieldset>	
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</f:view>
+</jsp:root>

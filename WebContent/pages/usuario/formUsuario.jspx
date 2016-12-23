@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" xmlns:bv="/bv-tags"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.formUsuario.title']}</ui:define>
+			<ui:define name="body">
+
+				<c:if test="#{!(usuarioBean.ADMIN || usuarioBean.SUPER)}">
+					<script>location.href = '#{usuarioBean.PAG_SEM_PERMISSAO}'</script>
+				</c:if>
+
+				<h:form id="formUsuario">
+					<h:panelGrid id="msg" > <h:message  for="formUsuario" errorClass="error" /> </h:panelGrid>
+
+					<h:panelGrid columns="2" columnClasses="right,left">
+
+						<h:outputLabel for="nomeInput" value="#{msg['page.formUsuario.label.nome']}*:"  />
+						<h:panelGroup>
+							<h:inputText id="nomeInput" value="#{usuarioBean.usuario.nome}" maxlength="60" size="40" required="true" />
+							<h:message for="nomeInput" errorClass="error" />
+						</h:panelGroup>
+
+						<h:outputLabel for="cpfCnpjInput" value="#{msg['page.formUsuario.label.cpfCnpj']}*:"  />
+						<h:panelGroup>
+							<h:inputText id="cpfCnpjInput" value="#{usuarioBean.usuario.cnpjCpf}" validator="validators.CnpjCpfValidator" 
+								converter="converters.CpfCnpjConverter" 
+								maxlength="26" size="20" required="true" />
+							<h:message for="cpfCnpjInput" errorClass="error" />
+						</h:panelGroup>  
+
+						<h:outputLabel for="loginInput" value="#{msg['page.formUsuario.label.login']}*:" />
+						<h:panelGroup>
+							<h:inputText id="loginInput" value="#{usuarioBean.usuario.login}" required="true"
+								maxlength="30" />
+							<h:message for="loginInput" errorClass="error" />
+						</h:panelGroup>
+
+						<h:outputLabel for="senhaInput" value="#{msg['page.formUsuario.label.senha']}*:" />
+						<h:inputSecret id="senhaInput" value="#{usuarioBean.usuario.senha}" maxlength="60" />
+
+						<h:outputLabel for="confirmaSenhaInput" value="#{msg['page.formUsuario.label.confirmaSenha']}*:" />
+						<h:inputSecret id="confirmaSenhaInput" value="#{usuarioBean.usuario.confirmaSenha}" maxlength="60" />
+
+						<h:outputLabel for="emailPrincipalInput" value="#{msg['page.formUsuario.label.emailPrincipal']}*:" />
+						<h:panelGroup>
+							<h:inputText id="emailPrincipalInput" value="#{usuarioBean.usuario.email}" required="true"
+								maxlength="255" size="40" >
+								<f:converter converterId="converters.EmailMultiploConverter"/>
+								<f:validator validatorId="validators.EmailValidator" />
+							</h:inputText>
+							<h:message for="emailPrincipalInput" errorClass="error" />
+						</h:panelGroup>
+
+						<h:outputLabel for="outrosEmailInput" value="#{msg['page.formUsuario.label.outrosEmail']}:" />
+						<h:panelGroup>
+							<h:inputText id="outrosEmailInput" value="#{usuarioBean.usuario.outrosEmail}"
+								 maxlength="255" size="40" >
+									<f:converter converterId="converters.EmailMultiploConverter"/>
+									<f:validator validatorId="validators.EmailMultiploValidator" />
+							</h:inputText>
+							<h:message for="outrosEmailInput" errorClass="error" />
+						</h:panelGroup>
+
+
+						<h:outputLabel for="ativoInput" value="#{msg['page.formUsuario.label.ativo']}:" />
+						<h:selectBooleanCheckbox id="ativoInput" value="#{usuarioBean.usuario.ativo}" />
+
+						<h:outputLabel for="alteraSenhaInput" value="#{msg['page.formUsuario.label.alteraSenha']}:" />
+						<h:selectBooleanCheckbox id="alteraSenhaInput" value="#{usuarioBean.usuario.alteraSenha}" />
+
+						<h:outputLabel for="adminInput" value="#{msg['page.formUsuario.label.admin']}:" rendered="#{usuarioBean.SUPER}"/>
+						<h:selectBooleanCheckbox id="adminInput" value="#{usuarioBean.usuario.admin}" rendered="#{usuarioBean.SUPER}"/>
+
+					</h:panelGrid>
+
+					<fieldset style="width: 40%;">
+						<legend>
+							<h:outputText value="#{msg['page.formUsuario.fieldset.legend.endereco']}" />
+						</legend>  
+						<a4j:region>
+							<h:panelGrid columns="3" columnClasses="right,left" id="panelEndereco">
+								<h:outputLabel for="enderecoLogradouroInput" value="#{msg['page.formUsuario.label.endereco.logradouro']}*: " />
+								<h:inputText id="enderecoLogradouroInput" value="#{usuarioBean.usuario.endereco.logradouro}" maxlength="255" size="40" required="true"/>
+								<h:message for="enderecoLogradouroInput" errorClass="error" />
+		
+								<h:outputLabel for="enderecoComplementoInput" value="#{msg['page.formUsuario.label.endereco.complemento']}:" />
+								<h:inputText id="enderecoComplementoInput" value="#{usuarioBean.usuario.endereco.complemento}" maxlength="255" size="40" />
+								<h:message for="enderecoComplementoInput" errorClass="error" />
+		
+								<h:outputLabel for="enderecoBairroInput" value="#{msg['page.formUsuario.label.endereco.bairro']}*: " />
+								<h:inputText id="enderecoBairroInput" value="#{usuarioBean.usuario.endereco.bairro}" maxlength="40" size="40" required="true"/>
+								<h:message for="enderecoBairroInput" errorClass="error" />
+
+								<h:outputLabel for="enderecoPontoReferenciaInput" value="#{msg['page.formUsuario.label.endereco.pontoReferencia']}:" />
+								<h:inputTextarea  id="enderecoPontoReferenciaInput" value="#{usuarioBean.usuario.endereco.pontoReferencia}" rows="5" cols="41" />
+								<h:message for="enderecoPontoReferenciaInput" errorClass="error" />						
+		
+								<h:outputLabel for="enderecoCepInput" value="#{msg['page.formUsuario.label.endereco.cep']}*: " />
+								<h:inputText id="enderecoCepInput" value="#{usuarioBean.usuario.endereco.cep}" converter="converters.CepConverter" 
+										validator="validators.CepValidator" maxlength="11" size="9" required="true"/>
+								<h:message for="enderecoCepInput" errorClass="error" />
+
+								<h:outputLabel for="enderecoEstadoInput" value="#{msg['page.formUsuario.label.endereco.estado']}*: " />
+								<h:selectOneMenu id="enderecoEstadoInput" value="#{usuarioBean.usuario.endereco.estado.id}" required="true">
+									<f:selectItem itemLabel="#{msg['commons.selecione']}" itemValue="" />
+									<t:selectItems var="estado" itemLabel="#{estado.nome}"  itemValue="#{estado.id}"  value="#{usuarioBean.estados}" />
+									<a4j:support id="a1" status="loading" event="onchange" ajaxSingle="true" reRender="enderecoCidadeInput" action="#{usuarioBean.loadCidades}" />
+								</h:selectOneMenu>
+								<h:message for="enderecoEstadoInput" errorClass="error" />
+		
+								<h:outputLabel for="enderecoCidadeInput" value="#{msg['page.formUsuario.label.endereco.cidade']}*: " />
+								<h:selectOneMenu id="enderecoCidadeInput" value="#{usuarioBean.usuario.endereco.cidade.id}" required="true">
+									<f:selectItem itemLabel="#{msg['commons.selecione']}" itemValue="" />
+									<t:selectItems var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" value="#{usuarioBean.cidades}" />
+								</h:selectOneMenu>
+								<h:message for="enderecoCidadeInput" errorClass="error" />		
+								
+							</h:panelGrid >
+						</a4j:region>
+					</fieldset>
+
+<br/>
+					<fieldset style="width: 40%;">
+						<legend>
+							<h:outputText value="#{msg['page.formUsuario.fieldset.legend.telefone']}" />
+						</legend> 
+						<a4j:region> 
+						<h:panelGrid id="panelTelefone" columns="5" columnClasses="right,left,left,left,left" >
+							<h:outputLabel for="dddInput" value="#{msg['page.formUsuario.label.telefone.ddd']}*:" />
+							<h:inputText id="dddInput" value="#{usuarioBean.telefone.ddd}" maxlength="2" size="10" />
+							<h:outputLabel for="numeroInput" value="#{msg['page.formUsuario.label.telefone.numero']}*:" />
+							<h:inputText id="numeroInput" value="#{usuarioBean.telefone.numero}" maxlength="9" size="20" />
+		
+							<a4j:commandButton status="loading" action="#{usuarioBean.addTelefone}" value="#{msg['commons.incluir']}" 
+							reRender="tabTelefone,panelTelefone,msg"/>
+						</h:panelGrid >
+						</a4j:region>
+						
+						<rich:dataTable id="tabTelefone" value="#{usuarioBean.usuario.telefones}" var="telefone"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="1"
+							cellspacing="0" cellpadding="2" rows="10" styleClass="rich-table" >
+
+							 <rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.formUsuario.label.telefone.ddd']}" />
+								</f:facet>
+								<h:outputText value="#{telefone.ddd}" />
+							</rich:column>
+
+							 <rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.formUsuario.label.telefone.numero']}" />
+								</f:facet>
+								<h:outputText value="#{telefone.numero}" />
+							</rich:column>
+
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.excluir']}" />
+								</f:facet>
+								<a4j:commandButton immediate="true" action="#{usuarioBean.removeTelefone}" 
+								value="#{msg['commons.excluir']}" reRender="tabTelefone"
+									onclick="javascript:if (!confirm('Deseja excluir este registro?')) return false;">
+									<f:setPropertyActionListener target="#{usuarioBean.telefone}" value="#{telefone}" />
+								</a4j:commandButton>
+							</rich:column>
+
+					</rich:dataTable>
+
+					</fieldset>
+
+<br />
+					<fieldset style="width: 40%;">
+						<legend>
+							<h:outputText value="#{msg['page.formUsuario.fieldset.legend.perfil']}" />
+						</legend>  
+						<a4j:region>
+						<h:panelGrid columns="3">
+							<h:outputLabel for="perfilInput" value="#{msg['page.formUsuario.label.perfil']}:" />
+							<h:selectOneMenu value="#{usuarioBean.perfil}" id="perfilInput"
+								converter="converters.SimpleEntityConverter">
+								<f:selectItem itemValue="" itemLabel="#{msg['commons.selecione']}" />
+								<t:selectItems value="#{usuarioBean.perfis}" var="perfil" itemLabel="#{perfil.nome}" itemValue="#{perfil}" />
+							</h:selectOneMenu>
+							<a4j:commandButton action="#{usuarioBean.addPerfil}" value="#{msg['commons.incluir']}" 
+								reRender="perfilTable,perfilInput" status="loading"/>
+						</h:panelGrid>
+						</a4j:region>
+	
+						<a4j:region>
+						<rich:dataTable value="#{usuarioBean.listCadPerfil}" var="perfil" id="perfilTable"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="1"
+							cellspacing="0" cellpadding="2">
+	
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['page.formUsuario.label.perfil']}" />
+								</f:facet>
+								<h:outputText value="#{perfil.nome}" />
+							</rich:column>
+	
+	
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.excluir']}" />
+								</f:facet>
+								<a4j:commandButton  action="#{usuarioBean.removePerfil}" value="#{msg['commons.excluir']}"
+									immediate="true" reRender="perfilTable,perfilInput"
+									onclick="javascript:if (!confirm('Deseja excluir este registro?')) return false;" status="loading">
+									<f:setPropertyActionListener target="#{usuarioBean.perfil}" value="#{perfil}" />
+								</a4j:commandButton>
+							</rich:column>
+						</rich:dataTable>
+					</a4j:region>
+
+					</fieldset>
+
+					<br />
+					<hr />
+					<h:commandButton action="listUsuario" value="#{msg['commons.voltar']}" immediate="true" />
+					<h:commandButton action="#{usuarioBean.save}" value="#{msg['commons.salvar']}" />
+
+				</h:form>
+
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

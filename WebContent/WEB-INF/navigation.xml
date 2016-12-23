@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+	
+	<!-- Index -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>index</from-outcome>
+			<to-view-id>/pages/index.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formAlteraSenha</from-outcome>
+			<to-view-id>/pages/formAlteraSenha.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Login -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/login/login.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/pages/login/logout.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>semPermissao</from-outcome>
+			<to-view-id>/pages/permissao.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Usuario -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>listUsuario</from-outcome>
+			<to-view-id>/pages/usuario/listUsuario.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formUsuario</from-outcome>
+			<to-view-id>/pages/usuario/formUsuario.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Estado -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>listEstado</from-outcome>
+			<to-view-id>/pages/estado/listEstado.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formEstado</from-outcome>
+			<to-view-id>/pages/estado/formEstado.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Cidade -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formCidade</from-outcome>
+			<to-view-id>/pages/cidade/formCidade.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+    <navigation-case>
+			<from-outcome>listCidade</from-outcome>
+			<to-view-id>/pages/cidade/listCidade.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Pessoa -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>listPessoa</from-outcome>
+			<to-view-id>/pages/pessoa/listPessoa.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formPessoa</from-outcome>
+			<to-view-id>/pages/pessoa/formPessoa.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Cliente -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>listCliente</from-outcome>
+			<to-view-id>/pages/cliente/listCliente.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formCliente</from-outcome>
+			<to-view-id>/pages/cliente/formCliente.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Promotor -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>listPromotor</from-outcome>
+			<to-view-id>/pages/promotor/listPromotor.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>formPromotor</from-outcome>
+			<to-view-id>/pages/promotor/formPromotor.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+
+</faces-config>

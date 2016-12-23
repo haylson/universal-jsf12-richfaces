@@ -1,0 +1,133 @@
+ESTRUTURA MVC
+
+1� - Construir Model(Classe java padr�o).                                                (Ex: Estado.java)
+
+2� - Construir Interface de DAO(contrato com os metodos para a impl de DAO).             (Ex: pacote inter > IEstadoDao.java)
+
+3� - Construir Implementa��o de DAO(Classe mais pr�xima do BD).                          (Ex: pacote impl > EstadoDaoImpl.java)
+
+4� - Construir Interface de SERVICE(contrato com os metodos para a impl de SERVICE).     (Ex: pacote inter > IEstadoService.java)
+
+5� - Construir Implementa��o de SERVICE(Recebe requisi��es do Bean e encaminha ao DAO).  (Ex: pacote impl > EstadoServiceImpl.java)
+
+6� - Construir o BEAN(Recebe requisi��es da VIEW(tela de usuario)).                      (Ex: pacote bean > EstadoBean.java)
+
+7� - Configurar os XML.
+
+	1 - spring-config.xml (Registrar o DAO e o SERVICE).
+	2 - managed-beans (ou faces.config) (Registrar o BEAN & Cria vari�veis para a VIEW saber).
+	
+
+DICAS:
+
+ctrl + shift + O = conserta os imports
+
+ctrl + shift + C = Comentar no XML(Facelets)
+
+ctrl + shift + R = Pesquisar arquivos no eclipse
+
+ctrl + H = File Search
+
+ctrl + . = Procurar erro na classe. (. = ponto)
+
+alt + shift + R = Refactore ou refatorar o nome. Ex: ao clicar em um m�todo e refatorar seu nome, ele altera em todas as classes relacionadas.
+
+DICAS II :
+
+DAO IMPL
+	
+	- Implements a interface DAO.
+	- Criar o EntityManaged (Private) e criar pelo menos o seu SETTER. (O GETTER n�o � necess�rio).
+	
+SERVICE IMPL
+
+	- implements a interface de SERVICE.
+	- criar um objeto da interface de DAO. (ex: private IPessoaDao pessoaDao;)
+	- criar o SETTER do objeto da interface de DAO. (ex: setPessoaDao)
+	- anotar a classe como @Transactional(readOnly = true)(anota��o do spring).
+	- anotar os m�todos que v�o alterar dados do banco(salvar, atualizar e apagar) como @Transactional(readOnly = false)(anota��o do spring).
+	
+BEAN
+
+	- Instanciar um objeto da interface de SERVICE e criar o seu SETTER. (Ex: private IPessoaService pessoaService;).
+	- Instanciar um objeto da classe MODEL e criar os seus SETTERS e GETTERS. (Ex: private Pessoa pessoa).
+	- Instanciar um LIST de objetos e criar os seus SETTERS e GETTERS. (Ex: private List<Pessoa> listaPessoas;)
+	
+	
+JSF(PAGINAS)
+
+Ao criar uma p�gina nova:
+
+1 - Incluir no menu se necess�rio (em pages/templates/padrao.jspx)
+
+2 - Incluir titulo da nova pagina criada na internacionaliza��o (em src/SystemMessages.properties)
+	2.1 - Na parte declarada como Padrao e criando uma nova para a pagina criada.
+	
+3 - Incluir no Bean e no arquivo XML(managed-beans) todos os servi�os que est� p�gina ir� utilizar.
+
+NAVIGATION
+
+Incluir as p�ginas(forms e lists) nas regras de navega��o (do arquivo navigation.xml)
+
+WebContent/WEB-INF/navigation.xml
+
+JQUERY
+
+<rich:jQuery selector="#cpfCnpjInput" query="mask('999.999.999-99')"  timing="onload" />
+<rich:jQuery selector="#cepInput" query="mask('99.999-999')" timing="onload" />
+
+CONVERTER
+
+<f:converter converterId="converter.CpfConverter"/>
+<f:converter converterId="converter.CepConverter"/>
+
+EXEMPLOS CONVERTERS COM JQUERY:
+
+PARA CEP:
+<h:outputLabel for="cepInput" value="#{msg['page.label.cep']}:" />
+	<h:inputText id="cepInput" value="#{promotorBean.promotor.pessoa.endereco.cep}" maxlength="10" size="10" >
+		<rich:jQuery selector="#cepInput" query="mask('99.999-999')" timing="onload" />
+		<f:converter converterId="converter.CepConverter"/>
+	</h:inputText>
+<h:message for="cepInput" errorClass="error" />
+
+PARA CPF:
+<h:outputLabel for="cpfCnpjInput" value="#{msg['page.listPessoa.label.cpfCnpj']}*:" />
+	<h:inputText id="cpfCnpjInput" value="#{promotorBean.promotor.pessoa.cpfCnpj}" required="true" maxlength="14" size="14" >
+		<rich:jQuery selector="#cpfCnpjInput" query="mask('999.999.999-99')" timing="onload" />
+		<f:converter converterId="converter.CpfConverter"/>
+	</h:inputText>
+<h:message for="cpfCnpjInput" errorClass="error" />
+
+
+xxxxxx
+
+<h:outputLabel value="#{msg['page.listPessoa.label.tipoPessoa']}*:" />
+				<h:selectOneMenu id="listTipoPessoa" value="#{promotorBean.promotor.pessoa.tipoPessoa}" required="true" styleClass="ComboBox" >
+					<t:selectItems value="#{promotorBean.listaTipoPessoa}" var="tipoPessoa" itemLabel="#{tipoPessoa}" itemValue="#{tipoPessoa}" />
+				</h:selectOneMenu>
+				<h:message for="listTipoPessoa" errorClass="error" />
+				
+<h:outputLabel for="dataNascimentoInput" value="#{msg['page.listPessoa.label.dataNascimento']}:" />
+					<rich:calendar datePattern="dd/MM/yyyy" value="#{promotorBean.promotor.pessoa.dataNascimento}" id="dtNascimento" enableManualInput="true" >  
+             			<f:convertDateTime type="date" dateStyle="short" locale="pt,BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy"/>  
+         		 	</rich:calendar>
+				<h:message for="dataNascimentoInput" errorClass="error" />	
+				
+JSFUtil.obterUsuarioSessao().getLogin()
+
+public String preparaInserir(){
+		estado = new Estado();
+		HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		Usuario usuario = (Usuario) httpSession.getAttribute("usu");
+		System.out.println("olha ai: " + usuario.getLogin());
+		return "formEstado";
+	}		
+	
+	<h:outputLabel value="#{utilBean.data}">
+		<f:convertDateTime type="date" dateStyle="short" locale="pt,BR" timeZone="GMT-3" pattern="dd/MM/yyyy" />
+	</h:outputLabel>					
+				
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+

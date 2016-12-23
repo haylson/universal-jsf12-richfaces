@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.listCidade.title']}</ui:define>
+			<ui:define name="body">
+
+				<h:form id="formCidade">
+				<fieldset style="width: 25%;">
+					<legend>
+						<h:outputText value="#{msg['page.listCidade.title']}" style="font-size: 13px; font-weight: bold;" />
+					</legend>
+						<rich:dataTable id="listaCidades" value="#{cidadeBean.listaCidades}" var="cidade"
+							onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="1"
+							cellspacing="1" cellpadding="2" rows="10" styleClass="rich-table">
+							
+							<rich:column sortBy="#{cidade.id}">
+								<f:facet name="header">
+								<h:outputText value="#{msg['page.listCidade.label.id']}" />
+								</f:facet>
+								<h:outputText value="#{cidade.id}" />
+							</rich:column >
+							
+							<rich:column sortBy="#{cidade.nome}">
+								<f:facet name="header">
+								<h:outputText value="#{msg['page.listCidade.label.cidade']}" />
+								</f:facet>
+								<h:outputText value="#{cidade.nome}" />
+							</rich:column >
+							
+							<rich:column sortBy="#{cidade.estado.nome}">
+								<f:facet name="header">
+								<h:outputText value="#{msg['page.listCidade.label.estado']}" />
+								</f:facet>
+								<h:outputText value="#{cidade.estado.nome}" />
+							</rich:column >
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg['commons.editar']}" />
+								</f:facet>
+								<h:commandLink action="#{cidadeBean.preparaAtualizar}">
+									<h:graphicImage value="/images/edit4.png" width="30" title="#{msg['commons.editar']}"/>
+									<f:setPropertyActionListener target="#{cidadeBean.cidade}" value="#{cidade}" />
+								</h:commandLink>
+							</rich:column>
+
+							<f:facet name="footer">
+								<rich:datascroller status="loading" for="listaCidades" maxPages="10" />
+							</f:facet>
+		
+						</rich:dataTable>
+
+					<hr />
+					
+					<h:commandButton action="index" value="#{msg['commons.voltar']}" />
+					<h:commandButton action="#{cidadeBean.preparaInserir}" value="#{msg['commons.novo']}"/>
+
+				</fieldset>
+				</h:form>
+
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>

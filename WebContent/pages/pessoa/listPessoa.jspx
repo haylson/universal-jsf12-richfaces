@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<f:view>
+		<ui:composition template="/pages/templates/padrao.jspx">
+			<ui:define name="title">#{msg['page.listPessoa.title']}</ui:define>
+			<ui:define name="body">
+			
+				<h:form id="formPessoa">
+					<rich:dataTable id="listaPessoas" value="#{pessoaBean.listaPessoas}" var="pessoa"
+						onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+						onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" border="0"
+						cellspacing="1" cellpadding="2" rows="10" styleClass="rich-table">
+	
+						<rich:column sortBy="#{pessoa.id}">
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.id']}" />
+							</f:facet>
+							<h:outputText value="#{pessoa.id}" />
+						</rich:column>
+						
+						
+						<rich:column sortBy="#{pessoa.nome}">
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.nome']}" />
+							</f:facet>
+							<h:commandLink action="#{pessoaBean.preparaAtualizar}" >
+								<h:outputText value="#{pessoa.nome}" />
+								<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
+							</h:commandLink>
+						</rich:column>
+	
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.cpfCnpj']}" />
+							</f:facet>
+							<h:outputText value="#{pessoa.cpfCnpj}" />
+						</rich:column>
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.foneResidencial']}" />
+							</f:facet>
+							<h:outputText value="#{pessoa.foneResidencial}" />
+						</rich:column>
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.foneComercial']}" />
+							</f:facet>
+							<h:outputText value="#{pessoa.foneComercial}" />
+						</rich:column>
+						
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['page.listPessoa.label.foneCelular1']}" />
+							</f:facet>
+							<h:outputText value="#{pessoa.foneCelular1}" />
+						</rich:column>
+	
+						<rich:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg['commons.excluir']}" />
+							</f:facet>
+							<h:commandButton action="#{pessoaBean.apagar}" value="#{msg['commons.excluir']}"
+								onclick="javascript:if (!confirm('Deseja excluir este registro?')) return false;">
+								<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
+							</h:commandButton>
+						</rich:column>
+												
+						<f:facet name="footer">
+							<rich:datascroller status="loading" for="listaPessoas" maxPages="20" />
+						</f:facet>
+						
+					</rich:dataTable>
+
+					<hr />
+
+					<h:commandButton action="index" value="#{msg['commons.voltar']}" />
+					<h:commandButton action="#{pessoaBean.preparaInserir}" value="#{msg['commons.novo']}"/>
+
+
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</f:view>
+</jsp:root>
